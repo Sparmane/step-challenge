@@ -174,6 +174,11 @@
       const inspirationalQuote = document.getElementById('inspirational-quote');
       const startJourney = document.getElementById('start-journey');
 
+      // Initially hide all elements except for "Start Your Journey"
+      landingElements.forEach(el => el.style.display = 'none');
+      inspirationalQuote.style.display = 'none';
+      enterMapButton.style.display = 'none';
+
       seagulls.forEach(seagull => {
         const delay = Math.random() * 25 + 5; // Random delay between 5 and 30 seconds
         const startSize = Math.random() * 15 + 85; // Random start size between 85% and 100%
@@ -186,12 +191,21 @@
         // Fade out the "Start Your Journey" text
         startJourney.style.animation = 'fadeOutElements 2s forwards';
 
-        // Fade in other elements and start the music
-        landingElements.forEach(el => {
-          el.style.animation = 'fadeInUp 2s forwards';
-        });
-        inspirationalQuote.style.animation = 'fadeInUp 2s forwards';
+        // After fade-out, hide the "Start Your Journey" text and show other elements
         setTimeout(() => {
+          startJourney.style.display = 'none';
+          landingElements.forEach(el => el.style.display = 'block');
+          inspirationalQuote.style.display = 'block';
+          enterMapButton.style.display = 'inline-block';
+
+          // Start animations and music
+          landingElements.forEach(el => {
+            el.style.animation = '';
+            void el.offsetWidth; // Trigger reflow
+            el.style.animation = 'fadeInUp 2s forwards';
+          });
+          inspirationalQuote.style.animation = 'fadeInUp 2s forwards';
+          
           audio.play();
           audio.volume = 0;
           const fadeAudioIn = setInterval(() => {
@@ -237,32 +251,18 @@
         }, 7000);
       });
 
+      // Ensure the audio plays on page load and loops with a delay
+      audio.addEventListener('ended', function() {
+        setTimeout(() => {
+          audio.play();
+        }, 1000); // 1 second delay before looping
+      });
+
       // Handle autoplay restrictions
       audio.play().catch(error => {
         console.error("Autoplay prevented:", error);
-        // Add a button to start the audio if autoplay is prevented
-        const startButton = document.createElement('div');
-        startButton.textContent = 'Start your Journey';
-        startButton.className = 'start-journey';
-        startButton.style.position = 'absolute';
-        startButton.style.top = '10px';
-        startButton.style.left = '50%';
-        startButton.style.transform = 'translateX(-50%)';
-        startButton.style.padding = '10px';
-        startButton.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        startButton.style.color = 'white';
-        startButton.style.border = 'none';
-        startButton.style.borderRadius = '5px';
-        startButton.style.cursor = 'pointer';
-        document.body.appendChild(startButton);
-
-        startButton.addEventListener('click', function() {
-          audio.play().then(() => {
-            document.body.removeChild(startButton);
-          }).catch(error => {
-            console.error("Error playing audio:", error);
-          });
-        });
+        // Show the "Start Your Journey" text
+        startJourney.style.display = 'block';
       });
     });
   </script>
