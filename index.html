@@ -74,6 +74,7 @@
       position: absolute;
       top: 10%;
       left: -10%; /* Ensure seagulls start off-screen to the left */
+      display: none; /* Initially hide the seagulls */
     }
     .seagull1 {
       animation: fly1 30s linear infinite;
@@ -176,13 +177,6 @@
       // Initially hide all elements except for "Start Your Journey"
       landingElements.forEach(el => el.style.display = 'none');
 
-      seagulls.forEach(seagull => {
-        const delay = Math.random() * 25 + 5; // Random delay between 5 and 30 seconds
-        const startSize = Math.random() * 15 + 85; // Random start size between 85% and 100%
-        seagull.style.animationDelay = `${delay}s`;
-        seagull.style.transform = `scale(${startSize / 100})`;
-      });
-
       // Handle the click event for the "Start Your Journey" text
       startJourney.addEventListener('click', function() {
         // Fade out the "Start Your Journey" text
@@ -198,6 +192,14 @@
             el.style.animation = '';
             void el.offsetWidth; // Trigger reflow
             el.style.animation = 'fadeInUp 2s forwards';
+          });
+
+          seagulls.forEach(seagull => {
+            seagull.style.display = 'block';
+            const delay = Math.random() * 25 + 5; // Random delay between 5 and 30 seconds
+            const startSize = Math.random() * 15 + 85; // Random start size between 85% and 100%
+            seagull.style.animationDelay = `${delay}s`;
+            seagull.style.transform = `scale(${startSize / 100})`;
           });
 
           audio.play();
