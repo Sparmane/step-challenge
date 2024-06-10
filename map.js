@@ -1,5 +1,6 @@
+// Simulate step data (in a real scenario, you would fetch this from a server or file)
 const stepData = {
-    currentSteps: 227854, // Example current steps
+    currentSteps: 85000, // Example current steps
     targets: [
       { name: 'Sitges, Spain', stepsRequired: 0, url: 'page_sitges.html' },
       { name: 'Barcelona, Spain', stepsRequired: 71400, url: 'page_barcelona.html' }, // 23.8 miles
@@ -37,16 +38,16 @@ const stepData = {
     switch (name) {
       case 'Sitges, Spain': return 41.2351;
       case 'Barcelona, Spain': return 41.3809;
-      case 'Mataró, Spain': return 41.4965;
-      case 'Blanes, Spain': return 41.7224;
-      case 'Cadaqués, Spain': return 42.3042;
-      case 'Perpignan, France': return 42.7078;
-      case 'Narbonne, France': return 43.0950;
-      case 'Béziers, France': return 43.2126;
-      case 'Sète, France': return 43.3444;
-      case 'Montpellier, France': return 43.6108;
-      case 'Arles, France': return 43.5668;
-      case 'Marseille, France': return 43.2965; // Corrected latitude
+      case 'Mataró, Spain': return 41.5421;
+      case 'Blanes, Spain': return 41.6745;
+      case 'Cadaqués, Spain': return 42.2879;
+      case 'Perpignan, France': return 42.6886;
+      case 'Narbonne, France': return 43.1843;
+      case 'Béziers, France': return 43.3412;
+      case 'Sète, France': return 43.4028;
+      case 'Montpellier, France': return 43.6117;
+      case 'Arles, France': return 43.6766;
+      case 'Marseille, France': return 43.2965;
       default: return 0;
     }
   }
@@ -55,15 +56,15 @@ const stepData = {
     switch (name) {
       case 'Sitges, Spain': return 1.8089;
       case 'Barcelona, Spain': return 2.1228;
-      case 'Mataró, Spain': return 2.3559;
-      case 'Blanes, Spain': return 2.9334;
-      case 'Cadaqués, Spain': return 3.2874;
-      case 'Perpignan, France': return 3.0284;
-      case 'Narbonne, France': return 3.0787;
-      case 'Béziers, France': return 3.0067;
-      case 'Sète, France': return 3.2231;
-      case 'Montpellier, France': return 3.8767;
-      case 'Arles, France': return 4.6254;
+      case 'Mataró, Spain': return 2.4445;
+      case 'Blanes, Spain': return 2.7923;
+      case 'Cadaqués, Spain': return 3.2792;
+      case 'Perpignan, France': return 2.8948;
+      case 'Narbonne, France': return 2.9974;
+      case 'Béziers, France': return 3.2187;
+      case 'Sète, France': return 3.6967;
+      case 'Montpellier, France': return 3.8772;
+      case 'Arles, France': return 4.6277;
       case 'Marseille, France': return 5.3698;
       default: return 0;
     }
@@ -156,4 +157,3 @@ const stepData = {
   
   // Initial overlay update
   updateOverlay();
-  
