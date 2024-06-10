@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Step Challenge Playlist</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('Playlistbg.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+      text-align: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 3s ease-in;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(40, 40, 40, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .playlist-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .song-list {
+      list-style: none;
+      padding: 0;
+    }
+    .song-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      cursor: pointer;
+    }
+    .song-item:last-child {
+      border-bottom: none;
+    }
+    .locked {
+      color: #777;
+    }
+    .unlocked {
+      color: #fff;
+    }
+    .unlock-message {
+      font-size: 0.8em;
+      color: #aaa;
+    }
+    .page-section {
+      margin-top: 20px;
+    }
+    .song-title {
+      margin-left: 10px;
+    }
+    .current-song {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .current-song img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      text-decoration: none;
+      border-radius: 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: opacity 3s ease-out;
+    }
+    .back-button:hover {
+      background: rgba(0, 0, 0, 1);
+    }
+    .player-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .player-controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2em;
+      cursor: pointer;
+      margin: 0 10px;
+    }
+    .highlight {
+      background: #444;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+      font-weight: bold;
+      color: #bbb;
+    }
+    .track-number {
+      flex: 1;
+      text-align: left;
+    }
+    .title {
+      flex: 3;
+      text-align: left;
+      padding-right: 10px;
+    }
+    .location {
+      flex: 2;
+      text-align: left;
+      padding-right: 10px;
+    }
+    .length {
+      flex: 1;
+      text-align: center;
+      padding-right: 10px;
+    }
+    .actions {
+      flex: 1;
+      text-align: right;
+    }
+    .progress-container {
+      width: 100%;
+      background: #444;
+      border-radius: 5px;
+      margin-top: 20px;
+      height: 10px;
+      position: relative;
+      cursor: pointer;
+    }
+    .progress-bar {
+      background: #1db954;
+      height: 100%;
+      width: 0%;
+      border-radius: 5px;
+    }
+    .time {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8em;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="playlist-header">
+      <h1>Step Challenge Playlist</h1>
+    </div>
+    <div class="current-song">
+      <img id="current-song-art" src="background.png" alt="Song Art">
+      <h3 id="current-song-title">Select a song to play</h3>
+    </div>
+    <div class="player-controls">
+      <button id="prevButton"><i class="fas fa-step-backward"></i></button>
+      <button id="playButton" onclick="playSong(0)"><i class="fas fa-play"></i></button>
+      <button id="nextButton"><i class="fas fa-step-forward"></i></button>
+    </div>
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="time">
+      <span id="currentTime">0:00</span>
+      <span id="duration">0:00</span>
+    </div>
+    <div class="table-header">
+      <div class="track-number">#</div>
+      <div class="title">Title</div>
+      <div class="location">Location</div>
+      <div class="length">Length</div>
+      <div class="actions"></div>
+    </div>
+    <div id="playlist">
+      <!-- Songs will be added here dynamically -->
+    </div>
+    <a href="index.html" class="back-button" id="backButton">Back to Landing Page</a>
+  </div>
+  <script>
+    const songs = [
+      { title: "Waves of Calm", artist: "Landing Page", stepsRequired: 0, file: "Waves of Calm.mp3", page: "Landing Page", art: "background.png" },
+      { title: "500 Miles", artist: "Map Page", stepsRequired: 0, file: "500 Miles.mp3", page: "Map Page", art: "map.png" },
+      { title: "Sol en Sitges", artist: "Sitges", stepsRequired: 61293, file: "Sol en Sitges.mp3", page: "Sitges", art: "Sitgesbg.png" },
+      { title: "Barcelona Song", artist: "Barcelona", stepsRequired: 71400, file: "BarcelonaSong.mp3", page: "Barcelona", art: "BarcelonaBg.png" },
+      // Add more songs with corresponding step requirements and pages
+    ];
+
+    let currentSteps = 85000; // Example current steps; update dynamically
+    let currentSongIndex = null;
+    let audio = null;
+    let isDragging = false;
+
+    function renderPlaylist() {
+      const playlistDiv = document.getElementById('playlist');
+      playlistDiv.innerHTML = '';
+
+      songs.forEach((song, index) => {
+        const songItem = document.createElement('li');
+        songItem.classList.add('song-item', currentSteps >= song.stepsRequired ? 'unlocked' : 'locked');
+        songItem.innerHTML = `
+          <div class="track-number">${index + 1}</div>
+          <div class="title">${song.title}</div>
+          <div class="location">${song.artist}</div>
+          <div class="length" id="length-${index}">Loading...</div>
+          <div class="controls actions">
+            ${currentSteps >= song.stepsRequired ? `<i class="fas fa-play" onclick="playSong(${index})"></i>` : `<span class="unlock-message">Unlocks at ${song.stepsRequired} steps</span>`}
+            ${currentSteps >= song.stepsRequired ? `<a href="${song.file}" download><i class="fas fa-download"></i></a>` : ''}
+          </div>
+        `;
+        playlistDiv.appendChild(songItem);
+
+        // Load audio metadata to get duration
+        const audio = new Audio(song.file);
+        audio.onloadedmetadata = () => {
+          document.getElementById(`length-${index}`).innerText = formatTime(audio.duration);
+        };
+      });
+    }
+
+    function playSong(index) {
+      if (currentSongIndex !== null) {
+        const prevSongItem = document.querySelector(`.song-item:nth-child(${currentSongIndex + 1})`);
+        if (prevSongItem) {
+          prevSongItem.classList.remove('highlight');
+        }
+      }
+
+      const song = songs[index];
+      currentSongIndex = index;
+
+      const currentSongArt = document.getElementById('current-song-art');
+      const currentSongTitle = document.getElementById('current-song-title');
+      currentSongArt.src = song.art || "map.png";
+      currentSongTitle.innerText = `${song.title} - ${song.artist}`;
+
+      if (audio) {
+        audio.pause();
+      }
+
+      audio = new Audio(song.file);
+      audio.play();
+
+      audio.ontimeupdate = updateProgressBar;
+      audio.onended = playNextSong;
+
+      const durationElement = document.getElementById('duration');
+      audio.onloadedmetadata = () => {
+        durationElement.innerText = formatTime(audio.duration);
+      };
+
+      const currentSongItem = document.querySelector(`.song-item:nth-child(${currentSongIndex + 1})`);
+      if (currentSongItem) {
+        currentSongItem.classList.add('highlight');
+      }
+
+      const playButton = document.getElementById('playButton');
+      playButton.innerHTML = '<i class="fas fa-pause"></i>';
+      playButton.onclick = pauseSong;
+    }
+
+    function pauseSong() {
+      if (audio) {
+        audio.pause();
+        const playButton = document.getElementById('playButton');
+        playButton.innerHTML = '<i class="fas fa-play"></i>';
+        playButton.onclick = () => playSong(currentSongIndex);
+      }
+    }
+
+    function playNextSong() {
+      if (currentSongIndex !== null) {
+        let nextIndex = (currentSongIndex + 1) % songs.length;
+        while (songs[nextIndex].stepsRequired > currentSteps) {
+          nextIndex = (nextIndex + 1) % songs.length;
+        }
+        playSong(nextIndex);
+      }
+    }
+
+    function playPrevSong() {
+      if (currentSongIndex !== null) {
+        let prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        while (songs[prevIndex].stepsRequired > currentSteps) {
+          prevIndex = (prevIndex - 1 + songs.length) % songs.length;
+        }
+        playSong(prevIndex);
+      }
+    }
+
+    function updateProgressBar() {
+      const progressBar = document.getElementById('progressBar');
+      const currentTimeElement = document.getElementById('currentTime');
+      const durationElement = document.getElementById('duration');
+      if (audio && !isDragging) {
+        const currentTime = audio.currentTime;
+        const duration = audio.duration;
+        progressBar.style.width = `${(currentTime / duration) * 100}%`;
+        currentTimeElement.innerText = formatTime(currentTime);
+      }
+    }
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function handleProgressClick(e) {
+      const progressContainer = document.getElementById('progressContainer');
+      const rect = progressContainer.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const width = rect.width;
+      const percent = offsetX / width;
+      if (audio) {
+        audio.currentTime = percent * audio.duration;
+      }
+    }
+
+    function handleProgressMouseDown() {
+      isDragging = true;
+    }
+
+    function handleProgressMouseUp(e) {
+      isDragging = false;
+      handleProgressClick(e);
+    }
+
+    document.getElementById('nextButton').onclick = playNextSong;
+    document.getElementById('prevButton').onclick = playPrevSong;
+    document.getElementById('progressContainer').addEventListener('click', handleProgressClick);
+    document.getElementById('progressContainer').addEventListener('mousedown', handleProgressMouseDown);
+    document.addEventListener('mouseup', handleProgressMouseUp);
+
+    // Fade-in effect on page load
+    window.onload = () => {
+      document.body.style.opacity = 1;
+    };
+
+    // Fade-out effect and music fade out on back button click
+    document.getElementById('backButton').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.body.style.opacity = 0;
+      if (audio) {
+        let fadeAudioOut = setInterval(() => {
+          if (audio.volume > 0) {
+            audio.volume -= 0.05;
+          } else {
+            clearInterval(fadeAudioOut);
+            audio.pause();
+            window.location.href = e.target.href;
+          }
+        }, 150);
+      } else {
+        setTimeout(() => {
+          window.location.href = e.target.href;
+        }, 3000);
+      }
+    });
+
+    renderPlaylist();
+  </script>
+</body>
+</html>

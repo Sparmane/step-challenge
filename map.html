@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Step Challenge Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      opacity: 0; /* Initial opacity for fade-in effect */
+      transition: opacity 3s ease-in; /* Fade-in effect */
+    }
+    #map {
+      height: 100vh;
+      width: 100vw;
+      position: relative; /* Ensure map is the reference for overlay positioning */
+    }
+    .locked-marker {
+      filter: grayscale(100%);
+    }
+    .overlay {
+      position: fixed; /* Use fixed to ensure it stays visible */
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8); /* White background with transparency */
+      color: #003366; /* Dark blue text color */
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      z-index: 1000; /* Ensure overlay is on top */
+      pointer-events: none; /* Make overlay non-interactive */
+    }
+    .music-controls {
+      position: fixed;
+      bottom: 60px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      border-radius: 50px;
+      z-index: 1001; /* Ensure music controls are above other content */
+      color: white;
+    }
+    .music-button {
+      display: inline-block;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 1.2em;
+      cursor: pointer;
+      border: none;
+    }
+    .music-button:hover {
+      background: rgba(0, 0, 0, 1);
+    }
+    .song-title {
+      color: white;
+      font-size: 1em;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-out {
+      animation: fadeOut 3s forwards;
+    }
+    .playlist-button {
+      position: fixed;
+      bottom: 130px;
+      right: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      text-decoration: none;
+      border-radius: 20px;
+      z-index: 1001;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .playlist-button:hover {
+      background: rgba(0, 0, 0, 1);
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <!-- Overlay for quote and step information -->
+  <div class="overlay" id="overlay">
+    <p id="quote">"Alone we can do so little; together we can do so much." – Helen Keller</p>
+    <p id="steps-info"></p>
+  </div>
+  <!-- Audio element for background music -->
+  <audio id="background-music" src="500 Miles.mp3" preload="auto" autoplay loop></audio>
+  <!-- Music control buttons -->
+  <div class="music-controls">
+    <button class="music-button" onclick="playMusic()"><i class="fas fa-play"></i></button>
+    <button class="music-button" onclick="pauseMusic()"><i class="fas fa-pause"></i></button>
+    <span class="song-title">500 Miles</span>
+  </div>
+  <!-- Playlist button -->
+  <a href="playlist.html" class="playlist-button">Go to Playlist</a>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="map.js"></script>
+  <script>
+    // Ensure music plays on this page
+    const music = document.getElementById('background-music');
+    music.volume = 0;
+    music.play();
+    const fadeAudioIn = setInterval(() => {
+      if (music.volume < 1.0) {
+        music.volume += 0.05;
+      } else {
+        clearInterval(fadeAudioIn);
+      }
+    }, 60); // fade in over 3 seconds (60ms * 50 = 3000ms)
+
+    // Fade in the page content
+    window.onload = () => {
+      document.body.style.opacity = 1;
+    };
+
+    function playMusic() {
+      music.play();
+    }
+
+    function pauseMusic() {
+      music.pause();
+    }
+  </script>
+</body>
+</html>

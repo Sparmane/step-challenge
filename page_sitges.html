@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sitges, Spain</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('Sitgesbg.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #003366; /* Dark blue text color */
+      text-align: center;
+      opacity: 0; /* Initial opacity for fade-in effect */
+      transition: opacity 3s ease-in; /* Fade-in effect */
+    }
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8); /* White background with transparency */
+      border-radius: 10px;
+      color: #003366; /* Dark blue text color */
+    }
+    h1, h2, p {
+      margin: 20px 0;
+    }
+    iframe {
+      margin-top: 20px;
+      border: none;
+    }
+    .story-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .story-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      color: #003366; /* Dark blue text color */
+      max-width: 600px;
+      z-index: 1000;
+      opacity: 0; /* Initial opacity for fade-in effect */
+      transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Fade-in and pop-up effect */
+    }
+    .popup-content {
+      margin-bottom: 20px;
+    }
+    .close-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .music-button {
+      display: inline-block;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .music-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .song-title {
+      color: white;
+      font-size: 1.2em;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-out {
+      animation: fadeOut 3s forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <iframe id="video" width="560" height="315" src="https://www.youtube.com/embed/4llkAMFenYc" frameborder="0" allowfullscreen></iframe>
+    <h1>Sitges, Spain</h1>
+    <p>
+      Sitges is a charming coastal town in Catalonia, Spain, known for its beautiful beaches, vibrant nightlife, and rich cultural heritage. With its Mediterranean climate and picturesque scenery, it has been a popular destination for tourists and artists alike. 
+      One of the most famous historical sites in Sitges is the Cau Ferrat Museum, which was the home and studio of the famous Catalan painter and writer Santiago Rusiñol. The museum houses an impressive collection of art, including works by Rusiñol and other notable artists of the modernisme movement.
+    </p>
+    <h2>Local Recipe: Xató</h2>
+    It's not quite clear whether xató tastes like Sitges or Sitges tastes like xató, but what we do know for sure is that if you put a good xató on your table, you're going to have a moment of satisfaction. So let's learn how to make this winter salad's most genuine and traditional recipe
+    <p>
+      <b>Ingredients:</b><br>
+      - 2 endives<br>
+      - 200g desalted cod<br>
+      - 150g canned tuna<br>
+      - 50g black olives<br>
+      - 50g green olives<br>
+      - 100g roasted almonds<br>
+      - 50g roasted hazelnuts<br>
+      - 1 head of garlic<br>
+      - 4 ripe tomatoes<br>
+      - 1 dried ñora pepper<br>
+      - 100ml olive oil<br>
+      - 30ml vinegar<br>
+      - Salt to taste<br>
+      <br>
+      <b>Instructions:</b><br>
+      1. Roast the tomatoes and garlic. Remove the skins and seeds.<br>
+      2. Soak the ñora pepper in warm water until it softens. Remove the seeds.<br>
+      3. Blend the tomatoes, garlic, ñora pepper, almonds, and hazelnuts to make the Romesco sauce. Add olive oil, vinegar, and salt to taste.<br>
+      4. Assemble the salad with chopped endives, flaked cod, tuna, and olives. Dress with the Romesco sauce.<br>
+    </p>
+    <div style="text-align: right;">
+      <span class="story-button" onclick="openStory()">Read the Story</span>
+    </div>
+    <span class="back-button" onclick="goBackToMap()">Back to Map</span>
+  </div>
+
+  <!-- Story Pop-up -->
+  <div class="popup" id="story-popup">
+    <div class="popup-content">
+      <h2>A Tale from Sitges</h2>
+      <p>
+        Sitges is not only known for its beautiful beaches and cultural festivals but also for its rich history and legends. One such legend tells the story of Maria, a young woman who lived in Sitges centuries ago. Maria's husband, a fisherman, was lost at sea during a fierce storm. Heartbroken, Maria would walk along the beach every evening, hoping to see his boat on the horizon.
+        <br><br>
+        One stormy night, as Maria walked along the shore, she found a small, intricately carved wooden box washed up on the sand. Inside the box was a locket with a picture of her husband and a note that read, "I will always find my way back to you." From that day on, Maria felt a sense of peace, believing that her husband's spirit was always with her. The box and locket are now kept in the local museum, a testament to the enduring love and hope that defines the spirit of Sitges.
+      </p>
+    </div>
+    <span class="close-button" onclick="closeStory()">Close</span>
+  </div>
+
+  <!-- Audio element for background music -->
+  <audio id="background-music" src="Sol en Sitges.mp3" preload="auto" autoplay loop></audio>
+
+  <!-- Music control buttons -->
+  <div class="music-controls">
+    <span class="music-button" onclick="playMusic()">&#9654;</span>
+    <span class="music-button" onclick="pauseMusic()">&#10074;&#10074;</span>
+    <span class="song-title">Sol en Sitges</span>
+  </div>
+
+  <script>
+    // Ensure music plays on this page
+    const music = document.getElementById('background-music');
+    music.volume = 0;
+    music.play();
+    const fadeAudioIn = setInterval(() => {
+      if (music.volume < 1.0) {
+        music.volume += 0.05;
+      } else {
+        clearInterval(fadeAudioIn);
+      }
+    }, 60); // fade in over 3 seconds (60ms * 50 = 3000ms)
+
+    // Fade in the page content
+    window.onload = () => {
+      document.body.style.opacity = 1;
+    };
+
+    // Pause background music when video is played
+    document.getElementById('video').addEventListener('play', function() {
+      music.pause();
+    });
+
+    function openStory() {
+      const storyPopup = document.getElementById('story-popup');
+      storyPopup.style.display = 'block';
+      setTimeout(() => {
+        storyPopup.style.opacity = 1;
+        storyPopup.style.transform = 'translate(-50%, -50%) scale(1)';
+      }, 10);
+    }
+
+    function closeStory() {
+      const storyPopup = document.getElementById('story-popup');
+      storyPopup.style.opacity = 0;
+      storyPopup.style.transform = 'translate(-50%, -50%) scale(0.9)';
+      setTimeout(() => {
+        storyPopup.style.display = 'none';
+      }, 1000);
+    }
+
+    function playMusic() {
+      music.play();
+    }
+
+    function pauseMusic() {
+      music.pause();
+    }
+
+    function goBackToMap() {
+      document.body.classList.add('fade-out');
+      const fadeAudioOut = setInterval(() => {
+        if (music.volume > 0.05) {
+          music.volume -= 0.05;
+        } else {
+          clearInterval(fadeAudioOut);
+          music.pause();
+          window.location.href = 'map.html';
+        }
+      }, 60); // fade out over 3 seconds (60ms * 50 = 3000ms)
+      setTimeout(() => {
+        window.location.href = 'map.html';
+      }, 3000); // ensure redirection happens after fade out
+    }
+  </script>
+</body>
+</html>
