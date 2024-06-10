@@ -74,7 +74,6 @@
       position: absolute;
       top: 10%;
       left: -10%; /* Ensure seagulls start off-screen to the left */
-      display: none; /* Initially hide the seagulls */
     }
     .seagull1 {
       animation: fly1 30s linear infinite;
@@ -158,7 +157,7 @@
     </div>
     <img src="seagull.png" class="seagull seagull1" alt="Seagull">
     <img src="seagull.png" class="seagull seagull2" alt="Seagull">
-    <img src="seagull.png" class="seagull seagull3" alt="Seagull">
+    <img src "seagull.png" class="seagull seagull3" alt="Seagull">
     <img src="seagull.png" class="seagull seagull1" alt="Seagull">
     <img src="seagull.png" class="seagull seagull2" alt="Seagull">
   </div>
@@ -171,11 +170,19 @@
       const seagulls = document.querySelectorAll('.seagull');
       const audio = document.getElementById('background-music');
       const enterMapButton = document.getElementById('enter-map');
-      const landingElements = document.querySelectorAll('#landing h1, #enter-map, .seagull, #inspirational-quote');
+      const landingElements = document.querySelectorAll('#landing h1, #enter-map, #inspirational-quote');
       const startJourney = document.getElementById('start-journey');
 
       // Initially hide all elements except for "Start Your Journey"
       landingElements.forEach(el => el.style.display = 'none');
+
+      seagulls.forEach(seagull => {
+        const delay = Math.random() * 25 + 5; // Random delay between 5 and 30 seconds
+        const startSize = Math.random() * 15 + 85; // Random start size between 85% and 100%
+        seagull.style.animationDelay = `${delay}s`;
+        seagull.style.transform = `scale(${startSize / 100})`;
+        seagull.style.display = 'block'; // Ensure seagulls are displayed from the start
+      });
 
       // Handle the click event for the "Start Your Journey" text
       startJourney.addEventListener('click', function() {
@@ -192,14 +199,6 @@
             el.style.animation = '';
             void el.offsetWidth; // Trigger reflow
             el.style.animation = 'fadeInUp 2s forwards';
-          });
-
-          seagulls.forEach(seagull => {
-            seagull.style.display = 'block';
-            const delay = Math.random() * 25 + 5; // Random delay between 5 and 30 seconds
-            const startSize = Math.random() * 15 + 85; // Random start size between 85% and 100%
-            seagull.style.animationDelay = `${delay}s`;
-            seagull.style.transform = `scale(${startSize / 100})`;
           });
 
           audio.play();
