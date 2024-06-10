@@ -1,5 +1,5 @@
 const stepData = {
-    currentSteps: 85000, // Example current steps
+    currentSteps: 227811, // Example current steps
     targets: [
       { name: 'Sitges, Spain', stepsRequired: 0, url: 'page_sitges.html' },
       { name: 'Barcelona, Spain', stepsRequired: 71400, url: 'page_barcelona.html' }, // 23.8 miles
