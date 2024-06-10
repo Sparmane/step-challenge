@@ -31,6 +31,7 @@
       color: white;
       text-align: center;
       flex-direction: column;
+      z-index: 1; /* Ensure landing is above the background */
     }
     h1 {
       font-size: 3em;
@@ -39,6 +40,7 @@
       transform: translateX(20px);
       animation: fadeInRight 2s forwards;
       animation-delay: 6s;
+      z-index: 2; /* Ensure text is above the background */
     }
     #enter-map {
       margin-top: 20px;
@@ -52,6 +54,7 @@
       transform: translateX(-20px);
       animation: fadeInLeft 2s forwards;
       animation-delay: 10s;
+      z-index: 2; /* Ensure button is above the background */
     }
     #enter-map:hover {
       background: rgba(0, 0, 0, 0.7);
@@ -69,11 +72,13 @@
       border-radius: 10px;
       max-width: 80%;
       white-space: pre-line; /* Ensure the text breaks into multiple lines */
+      z-index: 2; /* Ensure quote is above the background */
     }
     .seagull {
       position: absolute;
       top: 10%;
       left: -10%; /* Ensure seagulls start off-screen to the left */
+      z-index: 3; /* Ensure seagulls are above the background */
     }
     .seagull1 {
       animation: fly1 30s linear infinite;
@@ -144,6 +149,7 @@
       font-style: italic;
       cursor: pointer;
       animation: fadeInUp 2s forwards;
+      z-index: 2; /* Ensure start journey is above the background */
     }
   </style>
 </head>
