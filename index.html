@@ -157,9 +157,9 @@
     </div>
     <img src="seagull.png" class="seagull seagull1" alt="Seagull">
     <img src="seagull.png" class="seagull seagull2" alt="Seagull">
-    <img src "seagull.png" class="seagull seagull3" alt="Seagull">
-    <img src="seagull.png" class="seagull seagull1" alt="Seagull">
-    <img src="seagull.png" class="seagull seagull2" alt="Seagull">
+    <img src="seagull.png" class="seagull seagull3" alt="Seagull">
+    <img src="seagull.png" class="seagull seagull4" alt="Seagull">
+    <img src="seagull.png" class="seagull seagull5" alt="Seagull">
   </div>
 
   <!-- Audio element for background music -->
@@ -221,7 +221,7 @@
         });
 
         // Fade out the music with the elements
-        audio.volume = 1.0;
+        audio.volume = Math.min(audio.volume, 1.0);
         const fadeAudio = setInterval(() => {
           if (audio.volume > 0.05) {
             audio.volume -= 0.05;
