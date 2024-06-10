@@ -361,7 +361,9 @@
           } else {
             clearInterval(fadeAudioOut);
             audio.pause();
-            window.location.href = e.target.href;
+            setTimeout(() => {
+              window.location.href = e.target.href;
+            }, 500); // Ensure redirection happens after audio pause
           }
         }, 150);
       } else {
