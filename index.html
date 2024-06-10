@@ -170,14 +170,11 @@
       const seagulls = document.querySelectorAll('.seagull');
       const audio = document.getElementById('background-music');
       const enterMapButton = document.getElementById('enter-map');
-      const landingElements = document.querySelectorAll('#landing h1, #enter-map, .seagull');
-      const inspirationalQuote = document.getElementById('inspirational-quote');
+      const landingElements = document.querySelectorAll('#landing h1, #enter-map, .seagull, #inspirational-quote');
       const startJourney = document.getElementById('start-journey');
 
       // Initially hide all elements except for "Start Your Journey"
       landingElements.forEach(el => el.style.display = 'none');
-      inspirationalQuote.style.display = 'none';
-      enterMapButton.style.display = 'none';
 
       seagulls.forEach(seagull => {
         const delay = Math.random() * 25 + 5; // Random delay between 5 and 30 seconds
@@ -195,8 +192,6 @@
         setTimeout(() => {
           startJourney.style.display = 'none';
           landingElements.forEach(el => el.style.display = 'block');
-          inspirationalQuote.style.display = 'block';
-          enterMapButton.style.display = 'inline-block';
 
           // Start animations and music
           landingElements.forEach(el => {
@@ -204,8 +199,7 @@
             void el.offsetWidth; // Trigger reflow
             el.style.animation = 'fadeInUp 2s forwards';
           });
-          inspirationalQuote.style.animation = 'fadeInUp 2s forwards';
-          
+
           audio.play();
           audio.volume = 0;
           const fadeAudioIn = setInterval(() => {
@@ -261,8 +255,6 @@
       // Handle autoplay restrictions
       audio.play().catch(error => {
         console.error("Autoplay prevented:", error);
-        // Show the "Start Your Journey" text
-        startJourney.style.display = 'block';
       });
     });
   </script>
