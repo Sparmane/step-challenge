@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blanes, Spain</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('backgroundblanes.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #003366; /* Dark blue text color */
+      text-align: center;
+      opacity: 0; /* Initial opacity for fade-in effect */
+      transition: opacity 3s ease-in; /* Fade-in effect */
+    }
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8); /* White background with transparency */
+      border-radius: 10px;
+      color: #003366; /* Dark blue text color */
+    }
+    h1, h2, p {
+      margin: 20px 0;
+    }
+    iframe {
+      margin-top: 20px;
+      border: none;
+    }
+    .story-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .story-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      color: #003366; /* Dark blue text color */
+      max-width: 600px;
+      z-index: 1000;
+      opacity: 0; /* Initial opacity for fade-in effect */
+      transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Fade-in and pop-up effect */
+    }
+    .popup-content {
+      margin-bottom: 20px;
+    }
+    .close-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .music-button {
+      display: inline-block;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .music-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .song-title {
+      color: white;
+      font-size: 1.2em;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-out {
+      animation: fadeOut 3s forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <iframe id="video" width="560" height="315" src="https://www.youtube.com/embed/your-video-id" frameborder="0" allowfullscreen></iframe>
+    <h1>Blanes, Spain</h1>
+    <p>
+      Blanes is a town and municipality in the comarca of Selva in Girona, Catalonia, Spain. Known as the "Gateway to the Costa Brava", Blanes is famous for its mild climate, beautiful beaches, and vibrant festivals. The town is also home to the stunning Marimurtra Botanical Garden and the historic Sant Joan's Castle, offering panoramic views of the coast.
+    </p>
+    <h2>Local Recipe: Fideuà</h2>
+    Fideuà is a traditional Catalan seafood dish similar to paella but made with noodles instead of rice. This flavorful dish is a favorite in coastal regions like Blanes.
+    <p>
+      <b>Ingredients:</b><br>
+      - 400g fideo noodles (short thin noodles)<br>
+      - 1kg mixed seafood (squid, prawns, clams, mussels)<br>
+      - 1 onion<br>
+      - 1 green pepper<br>
+      - 2 tomatoes<br>
+      - 4 cloves garlic<br>
+      - 1 liter fish stock<br>
+      - Olive oil<br>
+      - Salt and pepper to taste<br>
+      <br>
+      <b>Instructions:</b><br>
+      1. Heat olive oil in a large pan and sauté the chopped onion, garlic, and green pepper until softened.<br>
+      2. Add the diced tomatoes and cook for a few more minutes.<br>
+      3. Stir in the fideo noodles and toast them slightly.<br>
+      4. Pour in the fish stock and bring to a boil.<br>
+      5. Add the mixed seafood and simmer until cooked through.<br>
+      6. Season with salt and pepper to taste.<br>
+      7. Serve hot with a wedge of lemon.<br>
+    </p>
+    <div style="text-align: right;">
+      <span class="story-button" onclick="openStory()">Read the Story</span>
+    </div>
+    <span class="back-button" onclick="goBackToMap()">Back to Map</span>
+  </div>
+
+  <!-- Story Pop-up -->
+  <div class="popup" id="story-popup">
+    <div class="popup-content">
+      <h2>A Tale from Blanes</h2>
+      <p>
+        Blanes is rich with stories and folklore. One such tale is about the legend of the Blanes Dragon. According to the legend, a fearsome dragon once terrorized the town, demanding a sacrifice each year. A brave young man named Joan decided to confront the dragon. Armed with only his wit and a small dagger, Joan tricked the dragon into a cave and sealed it with a large boulder. The town celebrated Joan's bravery, and he became a local hero. The cave, known as Dragon's Cave, is now a popular tourist attraction, reminding visitors of Joan's heroic deed.
+      </p>
+    </div>
+    <span class="close-button" onclick="closeStory()">Close</span>
+  </div>
+
+  <!-- Audio element for background music -->
+  <audio id="background-music" src="Blanes Melody.mp3" preload="auto" autoplay loop></audio>
+
+  <!-- Music control buttons -->
+  <div class="music-controls">
+    <span class="music-button" onclick="playMusic()">&#9654;</span>
+    <span class="music-button" onclick="pauseMusic()">&#10074;&#10074;</span>
+    <span class="song-title">Blanes Melody</span>
+  </div>
+
+  <script>
+    // Ensure music plays on this page
+    const music = document.getElementById('background-music');
+    music.volume = 0;
+    music.play();
+    const fadeAudioIn = setInterval(() => {
+      if (music.volume < 1.0) {
+        music.volume += 0.05;
+      } else {
+        clearInterval(fadeAudioIn);
+      }
+    }, 60); // fade in over 3 seconds (60ms * 50 = 3000ms)
+
+    // Fade in the page content
+    window.onload = () => {
+      document.body.style.opacity = 1;
+    };
+
+    // Pause background music when video is played
+    document.getElementById('video').addEventListener('play', function() {
+      music.pause();
+    });
+
+    function openStory() {
+      const storyPopup = document.getElementById('story-popup');
+      storyPopup.style.display = 'block';
+      setTimeout(() => {
+        storyPopup.style.opacity = 1;
+        storyPopup.style.transform = 'translate(-50%, -50%) scale(1)';
+      }, 10);
+    }
+
+    function closeStory() {
+      const storyPopup = document.getElementById('story-popup');
+      storyPopup.style.opacity = 0;
+      storyPopup.style.transform = 'translate(-50%, -50%) scale(0.9)';
+      setTimeout(() => {
+        storyPopup.style.display = 'none';
+      }, 1000);
+    }
+
+    function playMusic() {
+      music.play();
+    }
+
+    function pauseMusic() {
+      music.pause();
+    }
+
+    function goBackToMap() {
+      document.body.classList.add('fade-out');
+      const fadeAudioOut = setInterval(() => {
+        if (music.volume > 0.05) {
+          music.volume -= 0.05;
+        } else {
+          clearInterval(fadeAudioOut);
+          music.pause();
+          window.location.href = 'map.html';
+        }
+      }, 60); // fade out over 3 seconds (60ms * 50 = 3000ms)
+      setTimeout(() => {
+        window.location.href = 'map.html';
+      }, 3000); // ensure redirection happens after fade out
+    }
+  </script>
+</body>
+</html>
