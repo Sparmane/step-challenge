@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mataró, Spain</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: url('backgroundmataro.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #003366; /* Dark blue text color */
+      text-align: center;
+      opacity: 0; /* Initial opacity for fade-in effect */
+      transition: opacity 3s ease-in; /* Fade-in effect */
+    }
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8); /* White background with transparency */
+      border-radius: 10px;
+      color: #003366; /* Dark blue text color */
+    }
+    h1, h2, p {
+      margin: 20px 0;
+    }
+    iframe {
+      margin-top: 20px;
+      border: none;
+    }
+    .story-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .story-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      color: #003366; /* Dark blue text color */
+      max-width: 600px;
+      z-index: 1000;
+      opacity: 0; /* Initial opacity for fade-in effect */
+      transition: opacity 1s ease-in-out, transform 1s ease-in-out; /* Fade-in and pop-up effect */
+    }
+    .popup-content {
+      margin-bottom: 20px;
+    }
+    .close-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .music-button {
+      display: inline-block;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .music-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .song-title {
+      color: white;
+      font-size: 1.2em;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-out {
+      animation: fadeOut 3s forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <iframe id="video" width="560" height="315" src="https://www.youtube.com/embed/s1XoYkn3osE" frameborder="0" allowfullscreen></iframe>
+    <h1>Mataró, Spain</h1>
+    <p>
+      Mataró, the capital of the comarca of Maresme, is located on the coast of the Mediterranean Sea, about 30 kilometers northeast of Barcelona. It has a rich history dating back to Roman times, as evidenced by the ruins of a Roman villa. The city is known for its beautiful beaches, vibrant cultural scene, and the stunning modernist architecture of Josep Puig i Cadafalch, a contemporary of Antoni Gaudí.
+    </p>
+    <h2>Local Recipe: Suquet de Peix</h2>
+    Suquet de Peix is a traditional Catalan fish stew that is both hearty and flavorful. This dish is perfect for seafood lovers and showcases the fresh fish available in the region.
+    <p>
+      <b>Ingredients:</b><br>
+      - 1 kg mixed fish (monkfish, hake, and clams)<br>
+      - 200g prawns<br>
+      - 4 potatoes<br>
+      - 1 onion<br>
+      - 2 tomatoes<br>
+      - 4 cloves garlic<br>
+      - 1 red pepper<br>
+      - 1 green pepper<br>
+      - 100ml white wine<br>
+      - 500ml fish stock<br>
+      - Olive oil<br>
+      - Salt and pepper to taste<br>
+      <br>
+      <b>Instructions:</b><br>
+      1. Heat the olive oil in a large pot and sauté the chopped onion, garlic, and peppers until softened.<br>
+      2. Add the diced tomatoes and cook for a few more minutes.<br>
+      3. Pour in the white wine and let it reduce slightly.<br>
+      4. Add the fish stock and bring to a boil.<br>
+      5. Add the sliced potatoes and cook until tender.<br>
+      6. Add the mixed fish and prawns, simmering until cooked through.<br>
+      7. Season with salt and pepper to taste.<br>
+      8. Serve hot with crusty bread.<br>
+    </p>
+    <div style="text-align: right;">
+      <span class="story-button" onclick="openStory()">Read the Story</span>
+    </div>
+    <span class="back-button" onclick="goBackToMap()">Back to Map</span>
+  </div>
+
+  <!-- Story Pop-up -->
+  <div class="popup" id="story-popup">
+    <div class="popup-content">
+      <h2>A Tale from Mataró</h2>
+      <p>
+        Mataró is steeped in legends and historical tales. One such story is about a hidden treasure said to be buried beneath the streets of the old town. According to the legend, during a time of war, a wealthy merchant hid his fortune to protect it from invading forces. He crafted an intricate map with clues, but he was captured and never returned. Over the centuries, many have tried to decipher the map and find the treasure, but it remains undiscovered, adding a sense of mystery and allure to the historic streets of Mataró.
+      </p>
+    </div>
+    <span class="close-button" onclick="closeStory()">Close</span>
+  </div>
+
+  <!-- Audio element for background music -->
+  <audio id="background-music" src="Mataro Encantado.mp3" preload="auto" autoplay loop></audio>
+
+  <!-- Music control buttons -->
+  <div class="music-controls">
+    <span class="music-button" onclick="playMusic()">&#9654;</span>
+    <span class="music-button" onclick="pauseMusic()">&#10074;&#10074;</span>
+    <span class="song-title">Mataro Encantado</span>
+  </div>
+
+  <script>
+    // Ensure music plays on this page
+    const music = document.getElementById('background-music');
+    music.volume = 0;
+    music.play();
+    const fadeAudioIn = setInterval(() => {
+      if (music.volume < 1.0) {
+        music.volume += 0.05;
+      } else {
+        clearInterval(fadeAudioIn);
+      }
+    }, 60); // fade in over 3 seconds (60ms * 50 = 3000ms)
+
+    // Fade in the page content
+    window.onload = () => {
+      document.body.style.opacity = 1;
+    };
+
+    // Pause background music when video is played
+    document.getElementById('video').addEventListener('play', function() {
+      music.pause();
+    });
+
+    function openStory() {
+      const storyPopup = document.getElementById('story-popup');
+      storyPopup.style.display = 'block';
+      setTimeout(() => {
+        storyPopup.style.opacity = 1;
+        storyPopup.style.transform = 'translate(-50%, -50%) scale(1)';
+      }, 10);
+    }
+
+    function closeStory() {
+      const storyPopup = document.getElementById('story-popup');
+      storyPopup.style.opacity = 0;
+      storyPopup.style.transform = 'translate(-50%, -50%) scale(0.9)';
+      setTimeout(() => {
+        storyPopup.style.display = 'none';
+      }, 1000);
+    }
+
+    function playMusic() {
+      music.play();
+    }
+
+    function pauseMusic() {
+      music.pause();
+    }
+
+    function goBackToMap() {
+      document.body.classList.add('fade-out');
+      const fadeAudioOut = setInterval(() => {
+        if (music.volume > 0.05) {
+          music.volume -= 0.05;
+        } else {
+          clearInterval(fadeAudioOut);
+          music.pause();
+          window.location.href = 'map.html';
+        }
+      }, 60); // fade out over 3 seconds (60ms * 50 = 3000ms)
+      setTimeout(() => {
+        window.location.href = 'map.html';
+      }, 3000); // ensure redirection happens after fade out
+    }
+  </script>
+</body>
+</html>
