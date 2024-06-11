@@ -41,15 +41,8 @@
     .song-item:last-child {
       border-bottom: none;
     }
-    .locked {
-      color: #777;
-    }
     .unlocked {
       color: #fff;
-    }
-    .unlock-message {
-      font-size: 0.8em;
-      color: #aaa;
     }
     .page-section {
       margin-top: 20px;
@@ -192,15 +185,14 @@
   </div>
   <script>
     const songs = [
-      { title: "Waves of Calm", artist: "Landing Page", stepsRequired: 0, file: "Waves of Calm.mp3", page: "Landing Page", art: "background.png" },
-      { title: "500 Miles", artist: "Map Page", stepsRequired: 0, file: "500 Miles.mp3", page: "Map Page", art: "map.png" },
-      { title: "Sol en Sitges", artist: "Sitges", stepsRequired: 61293, file: "Sol en Sitges.mp3", page: "Sitges", art: "Sitgesbg.png" },
-      { title: "Barcelona Song", artist: "Barcelona", stepsRequired: 71400, file: "BarcelonaSong.mp3", page: "Barcelona", art: "BarcelonaBg.png" },
-      { title: "Mataro Encantado", artist: "Mataro", stepsRequired: 133800, file: "Mataro Encantado.mp3", page: "Mataro", art: "backgroundmataro.png" },
-      { title: "La Ciudad de Blanes", artist: "Blanes", stepsRequired: 185700, file: "La Ciudad de Blanes.mp3", page: "Blanes", art: "backgroundblanes.png" }
+      { title: "Waves of Calm", artist: "Landing Page", file: "Waves of Calm.mp3", page: "Landing Page", art: "background.png" },
+      { title: "500 Miles", artist: "Map Page", file: "500 Miles.mp3", page: "Map Page", art: "map.png" },
+      { title: "Sol en Sitges", artist: "Sitges", file: "Sol en Sitges.mp3", page: "Sitges", art: "Sitgesbg.png" },
+      { title: "Barcelona Song", artist: "Barcelona", file: "BarcelonaSong.mp3", page: "Barcelona", art: "BarcelonaBg.png" },
+      { title: "Mataro Encantado", artist: "Mataro", file: "Mataro Encantado.mp3", page: "Mataro", art: "backgroundmataro.png" },
+      { title: "La Ciudad de Blanes", artist: "Blanes", file: "La Ciudad de Blanes.mp3", page: "Blanes", art: "backgroundblanes.png" }
     ];
 
-    let currentSteps = 85000; // Example current steps; update dynamically
     let currentSongIndex = null;
     let audio = null;
     let isDragging = false;
@@ -211,15 +203,15 @@
 
       songs.forEach((song, index) => {
         const songItem = document.createElement('li');
-        songItem.classList.add('song-item', currentSteps >= song.stepsRequired ? 'unlocked' : 'locked');
+        songItem.classList.add('song-item', 'unlocked');
         songItem.innerHTML = `
           <div class="track-number">${index + 1}</div>
           <div class="title" onclick="playSong(${index})">${song.title}</div>
           <div class="location">${song.artist}</div>
           <div class="length" id="length-${index}">Loading...</div>
           <div class="controls actions">
-            ${currentSteps >= song.stepsRequired ? `<i class="fas fa-play" onclick="playSong(${index})"></i>` : `<span class="unlock-message">Unlocks at ${song.stepsRequired} steps</span>`}
-            ${currentSteps >= song.stepsRequired ? `<a href="${song.file}" download><i class="fas fa-download"></i></a>` : ''}
+            <i class="fas fa-play" onclick="playSong(${index})"></i>
+            <a href="${song.file}" download><i class="fas fa-download"></i></a>
           </div>
         `;
         playlistDiv.appendChild(songItem);
@@ -285,9 +277,6 @@
     function playNextSong() {
       if (currentSongIndex !== null) {
         let nextIndex = (currentSongIndex + 1) % songs.length;
-        while (songs[nextIndex].stepsRequired > currentSteps) {
-          nextIndex = (nextIndex + 1) % songs.length;
-        }
         playSong(nextIndex);
       }
     }
@@ -295,9 +284,6 @@
     function playPrevSong() {
       if (currentSongIndex !== null) {
         let prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        while (songs[prevIndex].stepsRequired > currentSteps) {
-          prevIndex = (prevIndex - 1 + songs.length) % songs.length;
-        }
         playSong(prevIndex);
       }
     }
