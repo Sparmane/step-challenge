@@ -191,189 +191,198 @@
     <a href="index.html" class="back-button" id="backButton">Back to Landing Page</a>
   </div>
   <script>
-    const songs = [
-      { title: "Waves of Calm", artist: "Landing Page", stepsRequired: 0, file: "Waves of Calm.mp3", page: "Landing Page", art: "background.png" },
-      { title: "500 Miles", artist: "Map Page", stepsRequired: 0, file: "500 Miles.mp3", page: "Map Page", art: "map.png" },
-      { title: "Sol en Sitges", artist: "Sitges", stepsRequired: 61293, file: "Sol en Sitges.mp3", page: "Sitges", art: "Sitgesbg.png" },
-      { title: "Barcelona Song", artist: "Barcelona", stepsRequired: 71400, file: "BarcelonaSong.mp3", page: "Barcelona", art: "BarcelonaBg.png" },
-      // Add more songs with corresponding step requirements and pages
-    ];
+    // Get the current step count from map.js (adjust the path if necessary)
+    const script = document.createElement('script');
+    script.src = 'map.js';
+    document.head.appendChild(script);
 
-    let currentSteps = 85000; // Example current steps; update dynamically
-    let currentSongIndex = null;
-    let audio = null;
-    let isDragging = false;
+    script.onload = () => {
+      const currentSteps = stepData.currentSteps;
 
-    function renderPlaylist() {
-      const playlistDiv = document.getElementById('playlist');
-      playlistDiv.innerHTML = '';
+      const songs = [
+        { title: "Waves of Calm", artist: "Landing Page", stepsRequired: 0, file: "Waves of Calm.mp3", page: "Landing Page", art: "background.png" },
+        { title: "500 Miles", artist: "Map Page", stepsRequired: 0, file: "500 Miles.mp3", page: "Map Page", art: "map.png" },
+        { title: "Sol en Sitges", artist: "Sitges", stepsRequired: 61293, file: "Sol en Sitges.mp3", page: "Sitges", art: "Sitgesbg.png" },
+        { title: "Barcelona Song", artist: "Barcelona", stepsRequired: 71400, file: "BarcelonaSong.mp3", page: "Barcelona", art: "BarcelonaBg.png" },
+        { title: "Mataro Encantado", artist: "Mataró", stepsRequired: 133800, file: "Mataro Encantado.mp3", page: "Mataró", art: "backgroundmataro.png" },
+        { title: "La Ciudad de Blanes", artist: "Blanes", stepsRequired: 185700, file: "La Ciudad de Blanes.mp3", page: "Blanes", art: "backgroundblanes.png" }
+      ];
 
-      songs.forEach((song, index) => {
-        const songItem = document.createElement('li');
-        songItem.classList.add('song-item', currentSteps >= song.stepsRequired ? 'unlocked' : 'locked');
-        songItem.innerHTML = `
-          <div class="track-number">${index + 1}</div>
-          <div class="title">${song.title}</div>
-          <div class="location">${song.artist}</div>
-          <div class="length" id="length-${index}">Loading...</div>
-          <div class="controls actions">
-            ${currentSteps >= song.stepsRequired ? `<i class="fas fa-play" onclick="playSong(${index})"></i>` : `<span class="unlock-message">Unlocks at ${song.stepsRequired} steps</span>`}
-            ${currentSteps >= song.stepsRequired ? `<a href="${song.file}" download><i class="fas fa-download"></i></a>` : ''}
-          </div>
-        `;
-        playlistDiv.appendChild(songItem);
+      let currentSongIndex = null;
+      let audio = null;
+      let isDragging = false;
 
-        // Load audio metadata to get duration
-        const audio = new Audio(song.file);
+      function renderPlaylist() {
+        const playlistDiv = document.getElementById('playlist');
+        playlistDiv.innerHTML = '';
+
+        songs.forEach((song, index) => {
+          const songItem = document.createElement('li');
+          songItem.classList.add('song-item', currentSteps >= song.stepsRequired ? 'unlocked' : 'locked');
+          songItem.innerHTML = `
+            <div class="track-number">${index + 1}</div>
+            <div class="title">${song.title}</div>
+            <div class="location">${song.artist}</div>
+            <div class="length" id="length-${index}">Loading...</div>
+            <div class="controls actions">
+              ${currentSteps >= song.stepsRequired ? `<i class="fas fa-play" onclick="playSong(${index})"></i>` : `<span class="unlock-message">Unlocks at ${song.stepsRequired} steps</span>`}
+              ${currentSteps >= song.stepsRequired ? `<a href="${song.file}" download><i class="fas fa-download"></i></a>` : ''}
+            </div>
+          `;
+          playlistDiv.appendChild(songItem);
+
+          // Load audio metadata to get duration
+          const audio = new Audio(song.file);
+          audio.onloadedmetadata = () => {
+            document.getElementById(`length-${index}`).innerText = formatTime(audio.duration);
+          };
+        });
+      }
+
+      function playSong(index) {
+        if (currentSongIndex !== null) {
+          const prevSongItem = document.querySelector(`.song-item:nth-child(${currentSongIndex + 1})`);
+          if (prevSongItem) {
+            prevSongItem.classList.remove('highlight');
+          }
+        }
+
+        const song = songs[index];
+        currentSongIndex = index;
+
+        const currentSongArt = document.getElementById('current-song-art');
+        const currentSongTitle = document.getElementById('current-song-title');
+        currentSongArt.src = song.art || "map.png";
+        currentSongTitle.innerText = `${song.title} - ${song.artist}`;
+
+        if (audio) {
+          audio.pause();
+        }
+
+        audio = new Audio(song.file);
+        audio.play();
+
+        audio.ontimeupdate = updateProgressBar;
+        audio.onended = playNextSong;
+
+        const durationElement = document.getElementById('duration');
         audio.onloadedmetadata = () => {
-          document.getElementById(`length-${index}`).innerText = formatTime(audio.duration);
+          durationElement.innerText = formatTime(audio.duration);
         };
-      });
-    }
 
-    function playSong(index) {
-      if (currentSongIndex !== null) {
-        const prevSongItem = document.querySelector(`.song-item:nth-child(${currentSongIndex + 1})`);
-        if (prevSongItem) {
-          prevSongItem.classList.remove('highlight');
+        const currentSongItem = document.querySelector(`.song-item:nth-child(${currentSongIndex + 1})`);
+        if (currentSongItem) {
+          currentSongItem.classList.add('highlight');
+        }
+
+        const playButton = document.getElementById('playButton');
+        playButton.innerHTML = '<i class="fas fa-pause"></i>';
+        playButton.onclick = pauseSong;
+      }
+
+      function pauseSong() {
+        if (audio) {
+          audio.pause();
+          const playButton = document.getElementById('playButton');
+          playButton.innerHTML = '<i class="fas fa-play"></i>';
+          playButton.onclick = () => playSong(currentSongIndex);
         }
       }
 
-      const song = songs[index];
-      currentSongIndex = index;
-
-      const currentSongArt = document.getElementById('current-song-art');
-      const currentSongTitle = document.getElementById('current-song-title');
-      currentSongArt.src = song.art || "map.png";
-      currentSongTitle.innerText = `${song.title} - ${song.artist}`;
-
-      if (audio) {
-        audio.pause();
+      function playNextSong() {
+        if (currentSongIndex !== null) {
+          let nextIndex = (currentSongIndex + 1) % songs.length;
+          while (songs[nextIndex].stepsRequired > currentSteps) {
+            nextIndex = (nextIndex + 1) % songs.length;
+          }
+          playSong(nextIndex);
+        }
       }
 
-      audio = new Audio(song.file);
-      audio.play();
+      function playPrevSong() {
+        if (currentSongIndex !== null) {
+          let prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+          while (songs[prevIndex].stepsRequired > currentSteps) {
+            prevIndex = (prevIndex - 1 + songs.length) % songs.length;
+          }
+          playSong(prevIndex);
+        }
+      }
 
-      audio.ontimeupdate = updateProgressBar;
-      audio.onended = playNextSong;
+      function updateProgressBar() {
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeElement = document.getElementById('currentTime');
+        const durationElement = document.getElementById('duration');
+        if (audio && !isDragging) {
+          const currentTime = audio.currentTime;
+          const duration = audio.duration;
+          progressBar.style.width = `${(currentTime / duration) * 100}%`;
+          currentTimeElement.innerText = formatTime(currentTime);
+        }
+      }
 
-      const durationElement = document.getElementById('duration');
-      audio.onloadedmetadata = () => {
-        durationElement.innerText = formatTime(audio.duration);
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+      }
+
+      function handleProgressClick(e) {
+        const progressContainer = document.getElementById('progressContainer');
+        const rect = progressContainer.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const width = rect.width;
+        const percent = offsetX / width;
+        if (audio) {
+          audio.currentTime = percent * audio.duration;
+        }
+      }
+
+      function handleProgressMouseDown() {
+        isDragging = true;
+      }
+
+      function handleProgressMouseUp(e) {
+        isDragging = false;
+        handleProgressClick(e);
+      }
+
+      document.getElementById('nextButton').onclick = playNextSong;
+      document.getElementById('prevButton').onclick = playPrevSong;
+      document.getElementById('progressContainer').addEventListener('click', handleProgressClick);
+      document.getElementById('progressContainer').addEventListener('mousedown', handleProgressMouseDown);
+      document.addEventListener('mouseup', handleProgressMouseUp);
+
+      // Fade-in effect on page load
+      window.onload = () => {
+        document.body.style.opacity = 1;
       };
 
-      const currentSongItem = document.querySelector(`.song-item:nth-child(${currentSongIndex + 1})`);
-      if (currentSongItem) {
-        currentSongItem.classList.add('highlight');
-      }
-
-      const playButton = document.getElementById('playButton');
-      playButton.innerHTML = '<i class="fas fa-pause"></i>';
-      playButton.onclick = pauseSong;
-    }
-
-    function pauseSong() {
-      if (audio) {
-        audio.pause();
-        const playButton = document.getElementById('playButton');
-        playButton.innerHTML = '<i class="fas fa-play"></i>';
-        playButton.onclick = () => playSong(currentSongIndex);
-      }
-    }
-
-    function playNextSong() {
-      if (currentSongIndex !== null) {
-        let nextIndex = (currentSongIndex + 1) % songs.length;
-        while (songs[nextIndex].stepsRequired > currentSteps) {
-          nextIndex = (nextIndex + 1) % songs.length;
+      // Fade-out effect and music fade out on back button click
+      document.getElementById('backButton').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.body.style.opacity = 0;
+        if (audio) {
+          let fadeAudioOut = setInterval(() => {
+            if (audio.volume > 0) {
+              audio.volume -= 0.05;
+            } else {
+              clearInterval(fadeAudioOut);
+              audio.pause();
+              setTimeout(() => {
+                window.location.href = e.target.href;
+              }, 500); // Ensure redirection happens after audio pause
+            }
+          }, 150);
+        } else {
+          setTimeout(() => {
+            window.location.href = e.target.href;
+          }, 3000);
         }
-        playSong(nextIndex);
-      }
-    }
+      });
 
-    function playPrevSong() {
-      if (currentSongIndex !== null) {
-        let prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        while (songs[prevIndex].stepsRequired > currentSteps) {
-          prevIndex = (prevIndex - 1 + songs.length) % songs.length;
-        }
-        playSong(prevIndex);
-      }
-    }
-
-    function updateProgressBar() {
-      const progressBar = document.getElementById('progressBar');
-      const currentTimeElement = document.getElementById('currentTime');
-      const durationElement = document.getElementById('duration');
-      if (audio && !isDragging) {
-        const currentTime = audio.currentTime;
-        const duration = audio.duration;
-        progressBar.style.width = `${(currentTime / duration) * 100}%`;
-        currentTimeElement.innerText = formatTime(currentTime);
-      }
-    }
-
-    function formatTime(seconds) {
-      const minutes = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-
-    function handleProgressClick(e) {
-      const progressContainer = document.getElementById('progressContainer');
-      const rect = progressContainer.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const width = rect.width;
-      const percent = offsetX / width;
-      if (audio) {
-        audio.currentTime = percent * audio.duration;
-      }
-    }
-
-    function handleProgressMouseDown() {
-      isDragging = true;
-    }
-
-    function handleProgressMouseUp(e) {
-      isDragging = false;
-      handleProgressClick(e);
-    }
-
-    document.getElementById('nextButton').onclick = playNextSong;
-    document.getElementById('prevButton').onclick = playPrevSong;
-    document.getElementById('progressContainer').addEventListener('click', handleProgressClick);
-    document.getElementById('progressContainer').addEventListener('mousedown', handleProgressMouseDown);
-    document.addEventListener('mouseup', handleProgressMouseUp);
-
-    // Fade-in effect on page load
-    window.onload = () => {
-      document.body.style.opacity = 1;
+      renderPlaylist();
     };
-
-    // Fade-out effect and music fade out on back button click
-    document.getElementById('backButton').addEventListener('click', (e) => {
-      e.preventDefault();
-      document.body.style.opacity = 0;
-      if (audio) {
-        let fadeAudioOut = setInterval(() => {
-          if (audio.volume > 0) {
-            audio.volume -= 0.05;
-          } else {
-            clearInterval(fadeAudioOut);
-            audio.pause();
-            setTimeout(() => {
-              window.location.href = e.target.href;
-            }, 500); // Ensure redirection happens after audio pause
-          }
-        }, 150);
-      } else {
-        setTimeout(() => {
-          window.location.href = e.target.href;
-        }, 3000);
-      }
-    });
-
-    renderPlaylist();
   </script>
 </body>
 </html>
